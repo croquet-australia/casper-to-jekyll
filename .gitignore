@@ -5,4 +5,7 @@
 [Bb]in/
 [Oo]bj/
 
+# Packages
+packages/
+
 # Solution specific
