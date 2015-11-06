@@ -69,16 +69,18 @@ namespace CasperToJekyll.ConsoleApplication
             switch (Path.GetExtension(source)?.ToLowerInvariant())
             {
                 case ".md":
-                    return Task.Run(() => ExportMarkdownFile(source));
+                    return ExportMarkdownFileAsync(source);
 
                 default:
                     return Task.Run(() => ExportFile(source));
             }
         }
 
-        private void ExportMarkdownFile(string source)
+        private async Task ExportMarkdownFileAsync(string source)
         {
-            // todo Thread.Sleep(TimeSpan.FromSeconds(5));
+            var casperPost = await CasperPost.ParseAsync(source);
+
+            await JekyllPost.WriteAsync(_destination, casperPost);
         }
 
         private void ExportFile(string source)
