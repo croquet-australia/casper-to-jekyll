@@ -41,6 +41,7 @@ namespace CasperToJekyll.ConsoleApplication
                 await destination.WriteLineAsync("layout: post");
                 await destination.WriteLineAsync($"title: \"{jekyllPost.Title}\"");
                 await destination.WriteLineAsync($"date: {jekyllPost.Date:yyyy-MM-dd HH:mm:ss zzz}");
+                await destination.WriteLineAsync("author: Susan Linge");
                 await destination.WriteLineAsync("---");
                 await destination.WriteLineAsync(jekyllPost.Content);
             }
