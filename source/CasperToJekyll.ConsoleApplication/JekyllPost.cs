@@ -23,10 +23,17 @@ namespace CasperToJekyll.ConsoleApplication
 
         public string Destination { get; }
 
+        public string Layout => IsNews ? "post" : "default";
+
+        public bool IsNews => _casperPost.RelativePath.Contains("/news/");
+
         private string GetDestinationPath(string destinationDirectory)
         {
-            var filename = $"{_casperPost.Published:yyyy-MM-dd}-{_casperPost.Slug}.md";
-            var path = Path.Combine(destinationDirectory, filename);
+            var relativePath = IsNews
+                ? $"news/{_casperPost.Published:yyyy-MM-dd}-{_casperPost.Slug}.md"
+                : _casperPost.RelativePath;
+
+            var path = Path.Combine(destinationDirectory, relativePath);
 
             return path;
         }
@@ -35,10 +42,12 @@ namespace CasperToJekyll.ConsoleApplication
         {
             var jekyllPost = new JekyllPost(destinationDirectory, casperPost);
 
+            new FileInfo(jekyllPost.Destination).Directory.CreateDirectoryStructure();
+
             using (var destination = File.CreateText(jekyllPost.Destination))
             {
                 await destination.WriteLineAsync("---");
-                await destination.WriteLineAsync("layout: post");
+                await destination.WriteLineAsync($"layout: {jekyllPost.Layout}");
                 await destination.WriteLineAsync($"title: \"{jekyllPost.Title}\"");
                 await destination.WriteLineAsync($"date: {jekyllPost.Date:yyyy-MM-dd HH:mm:ss zzz}");
                 await destination.WriteLineAsync("author: Susan Linge");

@@ -9,6 +9,7 @@ namespace CasperToJekyll.ConsoleApplication
     {
         private readonly string _destination;
         private readonly string _source;
+        private string[] _excludedFiles;
 
         public Exporter(string source, string destination)
         {
@@ -17,22 +18,17 @@ namespace CasperToJekyll.ConsoleApplication
 
             _source = source;
             _destination = destination;
+            _excludedFiles = new[] {$"{source}\\README.md"};
         }
 
-        public Task ExportAsync()
+        public async Task ExportAsync()
         {
-            Console.WriteLine($"Exporting blog posts from {_source}...");
-
-            var directories = Directory.EnumerateDirectories(_source);
-            var tasks = directories.Select(ExportDirectoryAsync).ToArray();
-            var task = Task.WhenAll(tasks);
-
-            return task;
+            await ExportDirectoryAsync(_source);
         }
 
         private Task ExportDirectoryAsync(string directory)
         {
-            Console.WriteLine($"Exporting blog posts from {directory}...");
+            Console.WriteLine($"Exporting from {directory}...");
 
             var tasks = new[]
             {
@@ -47,10 +43,15 @@ namespace CasperToJekyll.ConsoleApplication
         private Task ExportFilesAsync(string directory)
         {
             var files = Directory.EnumerateFiles(directory);
-            var tasks = files.Select(ExportFileAsync);
+            var tasks = files.Where(IsNotExcludedFile).Select(ExportFileAsync);
             var task = Task.WhenAll(tasks);
 
             return task;
+        }
+
+        private bool IsNotExcludedFile(string file)
+        {
+            return !_excludedFiles.Contains(file, StringComparer.OrdinalIgnoreCase);
         }
 
         private Task ExportSubDirectoriesAsync(string directory)
@@ -78,15 +79,16 @@ namespace CasperToJekyll.ConsoleApplication
 
         private async Task ExportMarkdownFileAsync(string source)
         {
-            var casperPost = await CasperPost.ParseAsync(source);
+            var casperPost = await CasperPost.ParseAsync(_source, source);
 
             await JekyllPost.WriteAsync(_destination, casperPost);
         }
 
         private void ExportFile(string source)
         {
-            var fileName = Path.GetFileName(source) ?? "";
-            var destination = Path.Combine(_destination, fileName);
+            var destination = source.Replace(_source, _destination);
+
+            new FileInfo(destination).Directory.CreateDirectoryStructure();
 
             File.Copy(source, destination, true);
         }

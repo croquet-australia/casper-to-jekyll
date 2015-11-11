@@ -64,6 +64,7 @@
   <ItemGroup>
     <Compile Include="Arguments.cs" />
     <Compile Include="CasperPost.cs" />
+    <Compile Include="DirectoryInfoExtensions.cs" />
     <Compile Include="Exporter.cs" />
     <Compile Include="JekyllPost.cs" />
     <Compile Include="Program.cs" />

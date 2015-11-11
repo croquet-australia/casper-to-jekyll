@@ -20,8 +20,8 @@ namespace CasperToJekyll.ConsoleApplication
 #if DEBUG
                 case 0:
                     return new Arguments(
-                        @"C:\Users\Tim\Code\croquet-australia\developer-content\source\news",
-                        @"C:\Users\Tim\Code\croquet-australia\developer-content\jekyll-template\_posts");
+                        @"C:\Users\Tim\Code\croquet-australia\developer-content\source",
+                        @"C:\Users\Tim\Code\croquet-australia\developer-content\jekyll-template");
 #endif
 
                 case 2:
