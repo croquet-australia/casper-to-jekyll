@@ -67,6 +67,7 @@
     <Compile Include="DirectoryInfoExtensions.cs" />
     <Compile Include="Exporter.cs" />
     <Compile Include="JekyllPost.cs" />
+    <Compile Include="RootDirectoryOrganiser.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

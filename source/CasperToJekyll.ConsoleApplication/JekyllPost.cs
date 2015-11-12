@@ -25,12 +25,12 @@ namespace CasperToJekyll.ConsoleApplication
 
         public string Layout => IsNews ? "post" : "default";
 
-        public bool IsNews => _casperPost.RelativePath.Contains("/news/");
+        public bool IsNews => _casperPost.RelativePath.StartsWith(@"news\");
 
         private string GetDestinationPath(string destinationDirectory)
         {
             var relativePath = IsNews
-                ? $"news/{_casperPost.Published:yyyy-MM-dd}-{_casperPost.Slug}.md"
+                ? $"_posts/{_casperPost.Published:yyyy-MM-dd}-{_casperPost.Slug}.md"
                 : _casperPost.RelativePath;
 
             var path = Path.Combine(destinationDirectory, relativePath);

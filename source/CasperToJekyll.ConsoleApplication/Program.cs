@@ -23,6 +23,10 @@ namespace CasperToJekyll.ConsoleApplication
             var exporter = new Exporter(arguments.Source, arguments.Destination);
 
             await exporter.ExportAsync();
+
+            var organiser = new RootDirectoryOrganiser(arguments.Destination);
+
+            await organiser.OrganiseAsync();
         }
 
         private static void HandleException(Exception exception)

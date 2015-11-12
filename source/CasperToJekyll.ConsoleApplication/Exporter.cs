@@ -9,7 +9,7 @@ namespace CasperToJekyll.ConsoleApplication
     {
         private readonly string _destination;
         private readonly string _source;
-        private string[] _excludedFiles;
+        private readonly string[] _excludedFiles;
 
         public Exporter(string source, string destination)
         {
@@ -18,7 +18,7 @@ namespace CasperToJekyll.ConsoleApplication
 
             _source = source;
             _destination = destination;
-            _excludedFiles = new[] {$"{source}\\README.md"};
+            _excludedFiles = new[] {$"{source}\\README.md", $"{source}\\LICENSE.txt" };
         }
 
         public async Task ExportAsync()
