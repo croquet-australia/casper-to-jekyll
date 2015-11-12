@@ -19,7 +19,7 @@ namespace CasperToJekyll.ConsoleApplication
 
         public DateTime Date => _casperPost.Published;
 
-        public string Title => _casperPost.Title.Trim('"');
+        public string Title => _casperPost.Title.Trim('"').Replace(@"\", "/");
 
         public string Destination { get; }
 
